@@ -5,26 +5,29 @@ const refs = {
   second: document.querySelector('[data-value="secs"]'),
    };
 
-const timer = {
-    intervalId: null,
-    isActive: false,
+class CountdownTimer {
+    intervalId = null;
+    isActive = false;
+    
+    constructor({ selector, targetDate }) {
+        this.selector = selector;
+        this.targetDate = targetDate;
+    }
     start() {
         if (this.isActive) {
             return;
         };
 
         this.isActive = true;
-        const startTime = new Date('Dec 31, 2020');
-
-        getTime(0);
+                getTime(0);
 
         this.intervalId = setInterval(() => {
             const currentTime = Date.now();
-            const deltaTime = startTime - currentTime;
+            const deltaTime = this.targetDate - currentTime;
 
             getTime(deltaTime);
         }, 1000);
-    },
+    };
 };
 
 const getTime = (time) => {
@@ -33,20 +36,24 @@ const getTime = (time) => {
     const mins = pad(Math.floor((time % (1000 * 60 * 60)) / (1000 * 60)));
     const secs = pad(Math.floor((time % (1000 * 60)) / 1000));
     setTime(days, hours, mins, secs);
-}
+};
 
 const setTime = (days, hours, mins, secs) => {
-refs.day.textContent = days;
-refs.hour.textContent = hours;
-refs.minute.textContent = mins;
-refs.second.textContent = secs;
-    }
+    refs.day.textContent = days;
+    refs.hour.textContent = hours;
+    refs.minute.textContent = mins;
+    refs.second.textContent = secs;
+};
     
 function pad(value) {
   return String(value).padStart(2, '0');
 };
+const currentTime = Date.now();
+const deltaTime = new Date('Jan 01, 2021') - currentTime;
+
+const timer = new CountdownTimer({
+   selector: '#timer-1',
+  targetDate: new Date('Jan 01, 2021'),
+});
+ 
 timer.start();
-
-
-
-

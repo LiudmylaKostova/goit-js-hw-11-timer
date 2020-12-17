@@ -5,26 +5,30 @@ const refs = {
   second: document.querySelector('[data-value="secs"]'),
    };
 
-const timer = {
-    intervalId: null,
-    isActive: false,
+class CountdownTimer {
+    intervalId = null;
+    isActive = false;
+    
+    constructor(obj) {
+        this._selector = obj.selector;
+        this._targetDate = obj.targetDate;
+    }
     start() {
-        if (this.isActive) {
+        if (this._isActive) {
             return;
         };
 
-        this.isActive = true;
-        const startTime = new Date('Dec 31, 2020');
-
+        this._isActive = true;
+        
         getTime(0);
 
-        this.intervalId = setInterval(() => {
+        this._intervalId = setInterval(() => {
             const currentTime = Date.now();
-            const deltaTime = startTime - currentTime;
+            const deltaTime = this._targetDate - currentTime;
 
             getTime(deltaTime);
         }, 1000);
-    },
+    };
 };
 
 const getTime = (time) => {
@@ -45,8 +49,12 @@ refs.second.textContent = secs;
 function pad(value) {
   return String(value).padStart(2, '0');
 };
+const currentTime = Date.now();
+  const deltaTime = new Date('Dec 31, 2020') - currentTime;
+
+const timer = new CountdownTimer({
+   selector: '#timer-1',
+  targetDate: new Date('Dec 31, 2020'),
+});
+ 
 timer.start();
-
-
-
-
